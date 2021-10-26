@@ -37,7 +37,7 @@ export class CabinetService {
     question.id = cabinetId + questionRow[0];
     question.name = questionRow[1];
 
-    if (questionRow.length == 2) {
+    if (questionRow.length == 2 || question.name.startsWith('Дополнительно в форму записыва')) {
       question.questionComplexity = QuestionComplexity.COMPLEX;
       return question;
     }

@@ -6,6 +6,7 @@ import {Question} from "../shared/question.model";
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AssessmentType} from "../shared/assessment-type.enum";
 import {LifetimeType} from "../shared/lifetime-type.enum";
+import {QuestionComplexity} from "../shared/question-complexity.enum";
 
 @Component({
   selector: 'app-cabinet',
@@ -62,16 +63,28 @@ export class CabinetComponent implements OnInit, OnDestroy {
   }
 
   private initQuestionGroup(question: Question): FormGroup {
+    if (question.questionComplexity === QuestionComplexity.SIMPLE) {
+      const q1 = question.assessmentType === AssessmentType.BOOL ?
+        {isPresent: this.formBuilder.control(false, Validators.required)} :
+        {quantity: this.formBuilder.control('0', [Validators.required, Validators.min(0)])};
 
-    const q1 = question.assessmentType === AssessmentType.BOOL ?
-      {isPresent: this.formBuilder.control(false, Validators.required)} :
-      {quantity: this.formBuilder.control('0', [Validators.required, Validators.min(0)])};
+      const q2 = question.lifetimeType === LifetimeType.CHOICE ?
+        {choiceLifetime: this.formBuilder.control(this.choiceLifetimeVariants[1])} :
+        {manualLifetime: this.formBuilder.control('')};
 
-    const q2 = question.lifetimeType === LifetimeType.CHOICE ?
-      {choiceLifetime: this.formBuilder.control(this.choiceLifetimeVariants[1])} :
-      {manualLifetime: this.formBuilder.control('')};
-
-    return this.formBuilder.group({...q1, ...q2});
+      return this.formBuilder.group({...q1, ...q2});
+    } else {
+      return this.formBuilder.group({
+        additional: this.formBuilder.array([
+          // this.formBuilder.group({
+          //   name: this.formBuilder.control('art', Validators.required),
+          //   description: this.formBuilder.control("It's my name", Validators.required),
+          //   productionYear: this.formBuilder.control(1983, Validators.required),
+          //   quantity: this.formBuilder.control(1, Validators.required),
+          // })
+        ])
+      });
+    }
   }
 
   get cabinetFormQuestions(): AbstractControl[] {
@@ -84,5 +97,23 @@ export class CabinetComponent implements OnInit, OnDestroy {
 
   onCancel() {
     console.log(this.cabinetForm);
+  }
+
+  onAddInstrument(formArray: AbstractControl) {
+    (formArray as FormArray).push(
+      this.formBuilder.group({
+        name: this.formBuilder.control('', Validators.required),
+        description: this.formBuilder.control("", Validators.required),
+        productionYear: this.formBuilder.control('', Validators.required),
+        quantity: this.formBuilder.control('', Validators.required),
+      }));
+  }
+
+  getFormArrayControls(formArray: AbstractControl) {
+    return (<FormArray>formArray).controls;
+  }
+
+  onDeleteInstrument(instrumentControl: AbstractControl, i: number) {
+    (instrumentControl.parent as FormArray).removeAt(i);
   }
 }
