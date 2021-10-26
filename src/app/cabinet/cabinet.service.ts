@@ -17,8 +17,6 @@ export class CabinetService {
   }
 
   getName(cabinetId: string): string {
-    let questions = this.convertQuestions(this.questionTexts, cabinetId);
-    console.log(questions);
     return this.names.get(cabinetId);
   }
 

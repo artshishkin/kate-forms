@@ -48,7 +48,6 @@ export class CabinetComponent implements OnInit, OnDestroy {
     this.cabinetForm = this.formBuilder.group({
       questions: this.initQuestionArray()
     });
-    console.log(this.cabinetForm);
   }
 
   private initQuestionArray(): FormArray {
@@ -78,10 +77,10 @@ export class CabinetComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-
+    console.log(this.cabinetForm);
   }
 
   onCancel() {
-
+    console.log(this.cabinetForm);
   }
 }
