@@ -19,6 +19,8 @@ export class CabinetComponent implements OnInit, OnDestroy {
   questions: Question[] = [];
   cabinetForm: FormGroup;
 
+  choiceLifetimeVariants: string[] = ['до 5 лет', 'от 5 до 10 лет', 'более 10 лет'];
+
   private subs: Subscription[] = [];
 
   constructor(private route: ActivatedRoute,
@@ -66,7 +68,7 @@ export class CabinetComponent implements OnInit, OnDestroy {
       {quantity: this.formBuilder.control('0', [Validators.required, Validators.min(0)])};
 
     const q2 = question.lifetimeType === LifetimeType.CHOICE ?
-      {choiceLifetime: this.formBuilder.control('')} :
+      {choiceLifetime: this.formBuilder.control(this.choiceLifetimeVariants[1])} :
       {manualLifetime: this.formBuilder.control('')};
 
     return this.formBuilder.group({...q1, ...q2});

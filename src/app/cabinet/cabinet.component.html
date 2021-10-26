@@ -37,13 +37,23 @@
                      title="Есть в наличие">
               <input *ngIf="questionControl.controls['quantity']" type="number" class="form-control"
                      formControlName="quantity"
+                     min="0"
                      title="Штук">
             </div>
 
             <div class="col-xs-2">
-              <input *ngIf="questionControl.controls['choiceLifetime'] && questionControl.controls['isPresent']?.value"
-                     type="text" class="form-control"
-                     formControlName="choiceLifetime">
+
+              <select
+                *ngIf="questionControl.controls['choiceLifetime'] && (questionControl.controls['isPresent']?.value || !questionControl.controls['isPresent'])"
+                name="choiceLifetime"
+                id="choiceLifetime"
+                formControlName="choiceLifetime"
+                class="form-control"
+                title="Сроки эксплуатации">
+                <option *ngFor="let lifetimeValue of choiceLifetimeVariants"
+                        [value]="lifetimeValue">{{lifetimeValue}}</option>
+              </select>
+
               <input *ngIf="questionControl.controls['manualLifetime']" type="number" class="form-control"
                      formControlName="manualLifetime">
             </div>
