@@ -5,8 +5,7 @@ import {CabinetComponent} from "./cabinet/cabinet.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/cabinet/russian', pathMatch: 'full'},
-  {path: 'cabinet/russian', component: CabinetComponent},
-  {path: 'cabinet/foreign', component: CabinetComponent},
+  {path: 'cabinet/:id', component: CabinetComponent},
   {path: '**', redirectTo: '/'},
 ];
 
