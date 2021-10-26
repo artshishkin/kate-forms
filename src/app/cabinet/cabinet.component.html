@@ -1,1 +1,71 @@
 <h3>{{cabinetName}}</h3>
+
+<div class="row">
+  <div class="col-xs-12">
+    <form [formGroup]="cabinetForm" (ngSubmit)="onSubmit()">
+
+      <div class="row">
+        <div class="col-xs-12">
+          <button
+            type="submit"
+            class="btn btn-success"
+            [disabled]="cabinetForm.invalid"
+          >Save
+          </button>
+          <button type="button" class="btn btn-danger"
+                  (click)="onCancel()">Cancel
+          </button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12" formArrayName="questions">
+          <div class="row form-group"
+               *ngFor="let questionControl of cabinetFormQuestions; index as i"
+               [formGroupName]="i"
+               style="margin-top: 10px"
+          >
+            <div class="col-xs-8">
+              <label [title]="questions[i].description?questions[i].description:questions[i].name">
+                {{questions[i].name}}
+              </label>
+            </div>
+
+            <div class="col-xs-2">
+              <input *ngIf="questionControl.controls['isPresent']" type="checkbox" class="form-control"
+                     formControlName="isPresent"
+                     title="Есть в наличие">
+              <input *ngIf="questionControl.controls['quantity']" type="number" class="form-control"
+                     formControlName="quantity"
+                     title="Штук">
+            </div>
+
+            <div class="col-xs-2">
+              <input *ngIf="questionControl.controls['choiceLifetime'] && questionControl.controls['isPresent']?.value"
+                     type="text" class="form-control"
+                     formControlName="choiceLifetime">
+              <input *ngIf="questionControl.controls['manualLifetime']" type="number" class="form-control"
+                     formControlName="manualLifetime">
+            </div>
+
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-xs-12">
+              <button
+                type="submit"
+                class="btn btn-success"
+                [disabled]="cabinetForm.invalid"
+              >Save
+              </button>
+              <button type="button" class="btn btn-danger"
+                      (click)="onCancel()">Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

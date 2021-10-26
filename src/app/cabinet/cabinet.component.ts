@@ -2,6 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {CabinetService} from "./cabinet.service";
 import {Subscription} from "rxjs";
+import {Question} from "../shared/question.model";
+import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AssessmentType} from "../shared/assessment-type.enum";
+import {LifetimeType} from "../shared/lifetime-type.enum";
 
 @Component({
   selector: 'app-cabinet',
@@ -12,10 +16,13 @@ export class CabinetComponent implements OnInit, OnDestroy {
 
   cabinetId: string = null;
   cabinetName: string = null;
+  questions: Question[] = [];
+  cabinetForm: FormGroup;
 
   private subs: Subscription[] = [];
 
   constructor(private route: ActivatedRoute,
+              private formBuilder: FormBuilder,
               private cabinetService: CabinetService) {
   }
 
@@ -27,6 +34,8 @@ export class CabinetComponent implements OnInit, OnDestroy {
     let subscription = this.route.paramMap.subscribe(paramMap => {
       this.cabinetId = paramMap.get('id');
       this.cabinetName = this.cabinetService.getName(this.cabinetId);
+      this.questions = this.cabinetService.getQuestions(this.cabinetId);
+      this.initForm();
     });
     this.subs.push(subscription);
   }
@@ -35,4 +44,44 @@ export class CabinetComponent implements OnInit, OnDestroy {
     this.subs.forEach(sub => sub.unsubscribe());
   }
 
+  private initForm() {
+    this.cabinetForm = this.formBuilder.group({
+      questions: this.initQuestionArray()
+    });
+    console.log(this.cabinetForm);
+  }
+
+  private initQuestionArray(): FormArray {
+    const questionsArray = [];
+    for (const question of this.questions) {
+      const questionGroup: FormGroup = this.initQuestionGroup(question);
+      questionsArray.push(questionGroup);
+    }
+    return this.formBuilder.array(questionsArray);
+  }
+
+  private initQuestionGroup(question: Question): FormGroup {
+
+    const q1 = question.assessmentType === AssessmentType.BOOL ?
+      {isPresent: this.formBuilder.control(false, Validators.required)} :
+      {quantity: this.formBuilder.control('0', [Validators.required, Validators.min(0)])};
+
+    const q2 = question.lifetimeType === LifetimeType.CHOICE ?
+      {choiceLifetime: this.formBuilder.control('')} :
+      {manualLifetime: this.formBuilder.control('')};
+
+    return this.formBuilder.group({...q1, ...q2});
+  }
+
+  get cabinetFormQuestions(): AbstractControl[] {
+    return (<FormArray>this.cabinetForm.get('questions')).controls;
+  }
+
+  onSubmit() {
+
+  }
+
+  onCancel() {
+
+  }
 }

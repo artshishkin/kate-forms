@@ -6,6 +6,7 @@ import {CabinetComponent} from './cabinet/cabinet.component';
 import {HeaderComponent} from './header/header.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {DropdownDirective} from './shared/dropdown.directive';
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import {DropdownDirective} from './shared/dropdown.directive';
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     AppRoutingModule
   ],
   providers: [],
