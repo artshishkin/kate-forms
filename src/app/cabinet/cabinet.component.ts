@@ -7,6 +7,7 @@ import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@a
 import {AssessmentType} from "../shared/assessment-type.enum";
 import {LifetimeType} from "../shared/lifetime-type.enum";
 import {QuestionComplexity} from "../shared/question-complexity.enum";
+import {DataStorageService} from "../shared/data-storage.service";
 
 @Component({
   selector: 'app-cabinet',
@@ -26,7 +27,9 @@ export class CabinetComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
               private formBuilder: FormBuilder,
-              private cabinetService: CabinetService) {
+              private cabinetService: CabinetService,
+              private dataStorageService: DataStorageService
+  ) {
   }
 
   ngOnInit(): void {
@@ -93,10 +96,12 @@ export class CabinetComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     console.log(this.cabinetForm);
+    console.log(this.cabinetForm.value);
+    this.dataStorageService.storeCabinetData(this.cabinetForm.value);
   }
 
   onCancel() {
-    console.log(this.cabinetForm);
+    this.dataStorageService.fetchCabinetData();
   }
 
   onAddInstrument(formArray: AbstractControl) {
