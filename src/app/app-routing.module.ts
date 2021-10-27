@@ -1,17 +1,15 @@
 import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from "@angular/router";
-
-import {CabinetComponent} from "./cabinet/cabinet.component";
+import {PreloadAllModules, RouterModule, Routes} from "@angular/router";
 
 const routes: Routes = [
   {path: '', redirectTo: '/cabinet/russian', pathMatch: 'full'},
-  {path: 'cabinet/:id', component: CabinetComponent},
+  {path: 'cabinet', loadChildren: () => import('./cabinet/cabinet.module').then(m => m.CabinetModule)},
   {path: '**', redirectTo: '/'},
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, {preloadingStrategy: PreloadAllModules})
   ],
   exports: [
     RouterModule
