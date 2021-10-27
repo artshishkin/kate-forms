@@ -7,6 +7,7 @@ import {AppRoutingModule} from "./app-routing.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {CoreModule} from "./core.module";
 import {SharedModule} from "./shared/shared.module";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import {SharedModule} from "./shared/shared.module";
   imports: [
     BrowserModule,
     ReactiveFormsModule,
+    HttpClientModule,
     AppRoutingModule,
     SharedModule,
     CoreModule
