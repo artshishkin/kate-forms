@@ -13,7 +13,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    if (request.url.startsWith(environment.firebaseUrl) && request.url.indexOf('/cabinet') > 0) {
+    if (request.url.startsWith(environment.firebaseUrl) && request.url.indexOf('/users') > 0 && request.url.indexOf('/cabinet') > 0) {
       return this.authService.user.pipe(
         take(1),
         exhaustMap(

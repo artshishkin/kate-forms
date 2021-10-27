@@ -97,11 +97,11 @@ export class CabinetComponent implements OnInit, OnDestroy {
   onSubmit() {
     console.log(this.cabinetForm);
     console.log(this.cabinetForm.value);
-    this.dataStorageService.storeCabinetData(this.cabinetForm.value);
+    this.dataStorageService.storeCabinetData(this.cabinetId, this.cabinetForm.value);
   }
 
   onCancel() {
-    this.dataStorageService.fetchCabinetData();
+    this.dataStorageService.fetchCabinetData(this.cabinetId);
   }
 
   onAddInstrument(formArray: AbstractControl) {

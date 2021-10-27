@@ -17,22 +17,25 @@ export class DataStorageService {
               private authService: AuthService) {
   }
 
-  storeCabinetData(cabinetData: any) {
+  storeCabinetData(cabinetId: string, cabinetData: any) {
 
-    const cabinetDataUrl = this.getCabinetDataUrl();
+    const userId = this.authService.user.value.id;
+
+    const cabinetDataUrl = this.getCabinetDataUrl(userId, cabinetId);
 
     this.http.put(cabinetDataUrl, cabinetData)
       .subscribe(resp => console.log(resp));
   }
 
-  fetchCabinetData() {
-    this.fetchCabinetDataObservable()
+  fetchCabinetData(cabinetId: string) {
+    this.fetchCabinetDataObservable(cabinetId)
       .subscribe();
   }
 
-  fetchCabinetDataObservable(): Observable<any> {
+  fetchCabinetDataObservable(cabinetId: string): Observable<any> {
 
-    const cabinetDataUrl = this.getCabinetDataUrl();
+    const userId = this.authService.user.value.id;
+    const cabinetDataUrl = this.getCabinetDataUrl(userId, cabinetId);
 
     return this.http.get<any>(cabinetDataUrl).pipe(
       tap(cabinetData => console.log(cabinetData)),
@@ -45,11 +48,8 @@ export class DataStorageService {
     );
   }
 
-  private getCabinetDataUrl(): string {
-    const email: string = 'user1';
-    const cabinetId: string = 'russian';
-
-    return `${environment.firebaseUrl}/${email}/cabinet/${cabinetId}.json`;
+  private getCabinetDataUrl(userId: string, cabinetId: string): string {
+    return `${environment.firebaseUrl}/users/${userId}/cabinet/${cabinetId}.json`;
   }
 
 }
