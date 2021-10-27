@@ -6,6 +6,7 @@ import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
 import {AuthService} from "../auth/auth.service";
 import {CabinetService} from "../cabinet/cabinet.service";
+import {CabinetData} from "./cabinet-data.model";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class DataStorageService {
               private authService: AuthService) {
   }
 
-  storeCabinetData(cabinetId: string, cabinetData: any) {
+  storeCabinetData(cabinetId: string, cabinetData: CabinetData) {
 
     const userId = this.authService.user.value.id;
 
@@ -32,12 +33,12 @@ export class DataStorageService {
       .subscribe();
   }
 
-  fetchCabinetDataObservable(cabinetId: string): Observable<any> {
+  fetchCabinetDataObservable(cabinetId: string): Observable<CabinetData> {
 
     const userId = this.authService.user.value.id;
     const cabinetDataUrl = this.getCabinetDataUrl(userId, cabinetId);
 
-    return this.http.get<any>(cabinetDataUrl).pipe(
+    return this.http.get<CabinetData>(cabinetDataUrl).pipe(
       tap(cabinetData => console.log(cabinetData)),
       // map(cabinetData => cabinetData
       //   .map(data => {

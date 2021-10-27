@@ -8,6 +8,7 @@ import {AssessmentType} from "../shared/assessment-type.enum";
 import {LifetimeType} from "../shared/lifetime-type.enum";
 import {QuestionComplexity} from "../shared/question-complexity.enum";
 import {DataStorageService} from "../shared/data-storage.service";
+import {CabinetData} from "../shared/cabinet-data.model";
 
 @Component({
   selector: 'app-cabinet',
@@ -20,6 +21,8 @@ export class CabinetComponent implements OnInit, OnDestroy {
   cabinetName: string = null;
   questions: Question[] = [];
   cabinetForm: FormGroup;
+
+  cabinetData: CabinetData;
 
   choiceLifetimeVariants: string[] = ['до 5 лет', 'от 5 до 10 лет', 'более 10 лет'];
 
