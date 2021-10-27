@@ -2,10 +2,11 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
 
 import {CabinetComponent} from "./cabinet.component";
+import {AuthGuard} from "../auth/auth.guard";
 
 const routes: Routes = [
   {
-    path: '',
+    path: '', canActivate: [AuthGuard],
     children: [
       {path: ':id', component: CabinetComponent},
     ]
@@ -21,4 +22,5 @@ const routes: Routes = [
   ]
 })
 
-export class CabinetRoutingModule { }
+export class CabinetRoutingModule {
+}
