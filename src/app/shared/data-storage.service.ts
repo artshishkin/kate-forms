@@ -1,12 +1,13 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {tap} from "rxjs/operators";
+import {filter, map, mergeMap, tap} from "rxjs/operators";
 import {Observable} from "rxjs";
 
 import {environment} from "../../environments/environment";
 import {AuthService} from "../auth/auth.service";
 import {CabinetService} from "../cabinet/cabinet.service";
 import {CabinetData} from "./cabinet-data.model";
+import {User} from "../auth/user.model";
 
 @Injectable({
   providedIn: 'root'
@@ -59,11 +60,14 @@ export class DataStorageService {
   }
 
   getUserData(): Observable<any> {
-    const userId = this.authService.user.value.id;
-
-    const userDataUrl = this.getUserDataUrl(userId);
-
-    return this.http.get<any>(userDataUrl);
+    return this.authService.user.asObservable()
+      .pipe(
+        filter(u => !!u),
+        map((u: User) => this.getUserDataUrl(u.id)),
+        mergeMap(url => this.http.get<any>(url)),
+        tap(data => console.log(data))
+      )
+      ;
   }
 
   private getCabinetDataUrl(userId: string, cabinetId: string): string {

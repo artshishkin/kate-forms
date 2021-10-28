@@ -12,24 +12,28 @@ import {map} from "rxjs/operators";
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
-  private userSub: Subscription;
   isAuthenticated = false;
   username: Observable<string>;
+
+  private subs: Subscription[] = [];
 
   constructor(private authService: AuthService,
               private dataStorageService: DataStorageService) {
   }
 
   ngOnInit(): void {
-    this.userSub = this.authService.user.asObservable()
+
+    const userSub = this.authService.user.asObservable()
       .subscribe(user => this.isAuthenticated = !!user);
+    this.subs.push(userSub);
+
     this.username = this.dataStorageService
       .getUserData()
       .pipe(map(userData => userData['person-name']));
   }
 
   ngOnDestroy(): void {
-    this.userSub.unsubscribe();
+    this.subs.forEach(sub => sub.unsubscribe());
   }
 
   onSaveData() {
