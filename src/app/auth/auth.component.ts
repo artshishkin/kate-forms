@@ -7,6 +7,7 @@ import {AlertComponent} from "../shared/alert/alert.component";
 import {PlaceholderDirective} from "../shared/placeholder.directive";
 import {switchMap} from "rxjs/operators";
 import {DataStorageService} from "../shared/data-storage.service";
+import * as DataStore from "./data-store";
 
 @Component({
   selector: 'app-auth',
@@ -24,6 +25,10 @@ export class AuthComponent implements OnInit, OnDestroy {
   error: string = null;
 
   subs: Subscription[] = [];
+
+  federalDistricts: string[] = DataStore.federalDistricts;
+  private federalSubjectsMap = DataStore.federalSubjects;
+  federalSubjects: string[] = [];
 
   onToggleMode() {
     this.isLoginMode = !this.isLoginMode;
@@ -89,5 +94,9 @@ export class AuthComponent implements OnInit, OnDestroy {
       this.onClearError();
     });
     this.subs.push(subscription);
+  }
+
+  onChangeDistrict(district: string) {
+    this.federalSubjects = this.federalSubjectsMap.get(district);
   }
 }
