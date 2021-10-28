@@ -49,8 +49,22 @@ export class DataStorageService {
     );
   }
 
+  storeUserData(userData: any): Observable<any> {
+
+    const userId = this.authService.user.value.id;
+
+    const userDataUrl = this.getUserDataUrl(userId);
+    console.log(userData);
+    return this.http.put(userDataUrl, userData);
+  }
+
   private getCabinetDataUrl(userId: string, cabinetId: string): string {
     return `${environment.firebaseUrl}/users/${userId}/cabinet/${cabinetId}.json`;
   }
+
+  private getUserDataUrl(userId: string): string {
+    return `${environment.firebaseUrl}/users/${userId}/data.json`;
+  }
+
 
 }

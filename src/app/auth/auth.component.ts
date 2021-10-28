@@ -5,6 +5,8 @@ import {Observable, Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {AlertComponent} from "../shared/alert/alert.component";
 import {PlaceholderDirective} from "../shared/placeholder.directive";
+import {switchMap} from "rxjs/operators";
+import {DataStorageService} from "../shared/data-storage.service";
 
 @Component({
   selector: 'app-auth',
@@ -29,6 +31,7 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   constructor(private  authService: AuthService,
               private router: Router,
+              private dataStorageService: DataStorageService,
               private componentFactoryResolver: ComponentFactoryResolver) {
   }
 
@@ -41,12 +44,16 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   onSubmit(form: NgForm) {
     if (form.invalid) return;
-
+    const formValue = {
+      ...form.value,
+      password: null
+    };
     this.isLoading = true;
 
     let authObs: Observable<AuthResponseData> = this.isLoginMode ?
       this.authService.login(form.value.email, form.value.password) :
-      this.authService.signUp(form.value.email, form.value.password);
+      this.authService.signUp(form.value.email, form.value.password)
+        .pipe(switchMap(() => this.dataStorageService.storeUserData(formValue)));
 
     authObs
       .subscribe(
@@ -54,6 +61,7 @@ export class AuthComponent implements OnInit, OnDestroy {
           console.log(data);
           this.isLoading = false;
           this.router.navigate(["/"]);
+          form.reset();
         },
         errorMessage => {
           this.isLoading = false;
@@ -62,7 +70,7 @@ export class AuthComponent implements OnInit, OnDestroy {
         }
       );
 
-    form.reset();
+
   }
 
   onClearError() {
