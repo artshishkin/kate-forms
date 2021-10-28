@@ -106,15 +106,21 @@ export class CabinetComponent implements OnInit, OnDestroy {
       return this.formBuilder.group({...q1, ...q2});
 
     } else {
+      let additionalArray: FormGroup[] = [];
+      const isAdditionalPresent = !!this.cabinetData?.questions[index]?.additional;
+      if (isAdditionalPresent) {
+        for (const additionalData of this.cabinetData?.questions[index]?.additional) {
+          const formGroup = this.formBuilder.group({
+            name: this.formBuilder.control(additionalData.name, Validators.required),
+            description: this.formBuilder.control(additionalData.description, Validators.required),
+            productionYear: this.formBuilder.control(additionalData.productionYear, Validators.required),
+            quantity: this.formBuilder.control(additionalData.quantity, Validators.required),
+          });
+          additionalArray.push(formGroup);
+        }
+      }
       return this.formBuilder.group({
-        additional: this.formBuilder.array([
-          // this.formBuilder.group({
-          //   name: this.formBuilder.control('art', Validators.required),
-          //   description: this.formBuilder.control("It's my name", Validators.required),
-          //   productionYear: this.formBuilder.control(1983, Validators.required),
-          //   quantity: this.formBuilder.control(1, Validators.required),
-          // })
-        ])
+        additional: this.formBuilder.array(additionalArray)
       });
     }
   }
@@ -138,7 +144,7 @@ export class CabinetComponent implements OnInit, OnDestroy {
       this.formBuilder.group({
         name: this.formBuilder.control('', Validators.required),
         description: this.formBuilder.control("", Validators.required),
-        productionYear: this.formBuilder.control('', Validators.required),
+        productionYear: this.formBuilder.control(new Date().getFullYear(), Validators.required),
         quantity: this.formBuilder.control('', Validators.required),
       }));
   }
