@@ -5,13 +5,17 @@
     </div>
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li routerLinkActive="active" *ngIf="!isAuthenticated"><a routerLink="/auth">Authenticate</a></li>
-        <li routerLinkActive="active" *ngIf="isAuthenticated"><a [routerLink]="['/cabinet','russian']">Русский язык и литература</a></li>
-        <li routerLinkActive="active" *ngIf="isAuthenticated"><a [routerLink]="['/cabinet','foreign']">Иностранный язык</a></li>
-        <li routerLinkActive="active" *ngIf="isAuthenticated"><a [routerLink]="['/cabinet','carService']">Мастерская по ремонту и обслуживанию автомобилей</a></li>
+        <li routerLinkActive="active" *ngIf="!isAuthenticated"><a routerLink="/auth">Авторизация</a></li>
+        <li routerLinkActive="active" *ngIf="isAuthenticated"><a [routerLink]="['/cabinet','russian']">Русский язык и
+          литература</a></li>
+        <li routerLinkActive="active" *ngIf="isAuthenticated"><a [routerLink]="['/cabinet','foreign']">Иностранный
+          язык</a></li>
+        <li routerLinkActive="active" *ngIf="isAuthenticated"><a [routerLink]="['/cabinet','carService']">Мастерская по
+          ремонту и обслуживанию автомобилей</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li *ngIf="isAuthenticated"><a style="cursor: pointer;" (click)="onLogout()">Logout</a></li>
+        <li *ngIf="isAuthenticated"><a style="cursor: pointer; color: green;">{{username | async}}</a></li>
+        <li *ngIf="isAuthenticated"><a style="cursor: pointer;" (click)="onLogout()">Выйти</a></li>
         <li appDropdown class="dropdown">
           <a style="cursor: pointer;" class="dropdown-toggle" role="button">
             Manage<span class="caret"></span>
