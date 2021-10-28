@@ -5,14 +5,89 @@
     <!--    <div class="alert alert-danger" *ngIf="error">-->
     <!--      <p>{{error}}</p>-->
     <!--    </div>-->
-<!--    <app-alert [message]="error" *ngIf="error" (close)="onClearError()"></app-alert>-->
+    <!--    <app-alert [message]="error" *ngIf="error" (close)="onClearError()"></app-alert>-->
 
     <div *ngIf="isLoading" style="text-align: center">
       <app-loading-spinner></app-loading-spinner>
     </div>
     <form *ngIf="!isLoading" (ngSubmit)="onSubmit(authForm)" #authForm="ngForm">
+
+      <div class="form-group" *ngIf="!isLoginMode">
+        <label for="organization-name">Полное наименование образовательной организации</label>
+        <p>(в соответствии с Уставом)</p>
+        <input
+          type="text"
+          id="organization-name"
+          class="form-control"
+          ngModel
+          name="organization-name"
+          required
+          >
+      </div>
+
+      <div class="form-group" *ngIf="!isLoginMode">
+        <label for="organization-federal-district">Федеральный округ Российской Федерации</label>
+        <input
+          type="text"
+          id="organization-federal-district"
+          class="form-control"
+          ngModel
+          name="organization-federal-district"
+          required
+          >
+      </div>
+
+      <div class="form-group" *ngIf="!isLoginMode">
+        <label for="organization-federal-subject">Субъект Российской Федерации</label>
+        <input
+          type="text"
+          id="organization-federal-subject"
+          class="form-control"
+          ngModel
+          name="organization-federal-subject"
+          required
+          >
+      </div>
+
+      <div class="form-group" *ngIf="!isLoginMode">
+        <label for="organization-address">Адрес расположения</label>
+        <p>(со всеми зданиями и филиалами)</p>
+        <input
+          type="text"
+          id="organization-address"
+          class="form-control"
+          ngModel
+          name="organization-address"
+          required
+          >
+      </div>
+
+      <div class="form-group" *ngIf="!isLoginMode">
+        <label for="person-name">ФИО ответственного лица за заполнение данной формы</label>
+        <input
+          type="text"
+          id="person-name"
+          class="form-control"
+          ngModel
+          name="person-name"
+          required
+          >
+      </div>
+
+      <div class="form-group" *ngIf="!isLoginMode">
+        <label for="person-phone">Контактный номер телефона ответственного лица</label>
+        <input
+          type="text"
+          id="person-phone"
+          class="form-control"
+          ngModel
+          name="person-phone"
+          required
+          >
+      </div>
+
       <div class="form-group">
-        <label for="email">E-Mail</label>
+        <label for="email">Адрес электронной почты ответственного лица</label>
         <input
           type="text"
           id="email"
@@ -23,7 +98,7 @@
           email>
       </div>
       <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password">Пароль</label>
         <input
           type="password"
           id="password"
@@ -33,17 +108,18 @@
           minlength=6
           required>
       </div>
+
       <div>
         <button class="btn btn-primary"
                 [disabled]="authForm.invalid"
                 type="submit">
-          {{isLoginMode ? 'Login' : 'Sign Up'}}
+          {{isLoginMode ? 'Войти' : 'Зарегистрироваться'}}
         </button>
-        |
-        <button class="btn btn-warning" type="button"
-                (click)="onToggleMode()">
-          Switch to {{isLoginMode ? 'Sign Up' : 'Login'}}
-        </button>
+
+        <p>
+          {{isLoginMode?'Ещё нет аккаунта?':'Есть аккаунт?'}}
+          <a style="cursor: pointer" (click)="onToggleMode()">{{isLoginMode?'Регистрация':'Войти'}}</a>
+        </p>
       </div>
     </form>
   </div>
