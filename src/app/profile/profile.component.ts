@@ -24,6 +24,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   subs: Subscription[] = [];
 
+  profileUserData: any = null;
+
   federalDistricts: string[] = DataStore.federalDistricts;
   private federalSubjectsMap = DataStore.federalSubjects;
   federalSubjects: string[] = [];
@@ -35,6 +37,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    let subscription = this.dataStorageService.getUserData()
+      .subscribe(userData => {
+        this.profileUserData = userData;
+        this.onChangeDistrict(this.profileUserData['organization-federal-district']);
+      });
+    this.subs.push(subscription);
   }
 
   ngOnDestroy(): void {
@@ -43,10 +51,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   onSubmit(form: NgForm) {
     if (form.invalid) return;
+
+    console.log(form);
+
     const formValue = {
       ...form.value,
+      email: this.profileUserData?.email,
       password: null
     };
+
+    console.log(formValue);
+
     this.isLoading = true;
 
     let authObs: Observable<AuthResponseData> = this.dataStorageService.storeUserData(formValue);
@@ -55,6 +70,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .subscribe(
         data => {
           console.log(data);
+          this.profileUserData = data;
           this.isLoading = false;
         },
         errorMessage => {
