@@ -83,6 +83,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.subs.push(subscription);
   }
 
+  onCancel(form: NgForm) {
+    this.onChangeDistrict(this.profileUserData['organization-federal-district']);
+    form.reset({...this.profileUserData});
+  }
+
   onClearError() {
     this.error = null;
   }
