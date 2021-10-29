@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {filter, map, mergeMap, tap} from "rxjs/operators";
+import {catchError, filter, map, mergeMap, tap} from "rxjs/operators";
 import {Observable} from "rxjs";
 
 import {environment} from "../../environments/environment";
@@ -8,6 +8,7 @@ import {AuthService} from "../auth/auth.service";
 import {CabinetService} from "../cabinet/cabinet.service";
 import {CabinetData} from "./cabinet-data.model";
 import {User} from "../auth/user.model";
+import * as HttpErrorHandler from "./http-error-handler";
 
 @Injectable({
   providedIn: 'root'
@@ -55,7 +56,11 @@ export class DataStorageService {
     const userId = this.authService.user.value.id;
 
     const userDataUrl = this.getUserDataUrl(userId);
-    return this.http.put(userDataUrl, userData);
+    return this.http.put(userDataUrl, userData)
+      .pipe(
+        catchError(HttpErrorHandler.handleError),
+      );
+    ;
   }
 
   getUserData(): Observable<any> {
@@ -64,7 +69,8 @@ export class DataStorageService {
         filter(u => !!u),
         map((u: User) => this.getUserDataUrl(u.id)),
         mergeMap(url => this.http.get<any>(url)),
-        tap(data => console.log(data))
+        tap(data => console.log(data)),
+        catchError(HttpErrorHandler.handleError),
       )
       ;
   }
