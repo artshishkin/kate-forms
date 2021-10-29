@@ -17,6 +17,7 @@ import {AlertComponent} from "../shared/alert/alert.component";
 export class ProfileComponent implements OnInit, OnDestroy {
 
   @ViewChild(PlaceholderDirective) alertHost: PlaceholderDirective;
+  @ViewChild('profileForm') profileForm: NgForm;
 
   isLoading = false;
 
@@ -41,6 +42,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .subscribe(userData => {
         this.profileUserData = userData;
         this.onChangeDistrict(this.profileUserData['organization-federal-district']);
+        this.profileForm.reset({...userData});
       });
     this.subs.push(subscription);
   }
@@ -49,18 +51,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.subs.forEach(sub => sub.unsubscribe());
   }
 
-  onSubmit(form: NgForm) {
-    if (form.invalid) return;
-
-    console.log(form);
+  onSubmit() {
+    if (!this.profileForm?.valid) return;
 
     const formValue = {
-      ...form.value,
+      ...this.profileForm.value,
       email: this.profileUserData?.email,
       password: null
     };
-
-    console.log(formValue);
 
     this.isLoading = true;
 
@@ -69,8 +67,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     let subscription = authObs
       .subscribe(
         data => {
-          console.log(data);
           this.profileUserData = data;
+          this.profileForm.reset({...this.profileUserData});
           this.isLoading = false;
         },
         errorMessage => {
@@ -83,9 +81,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.subs.push(subscription);
   }
 
-  onCancel(form: NgForm) {
+  onCancel() {
     this.onChangeDistrict(this.profileUserData['organization-federal-district']);
-    form.reset({...this.profileUserData});
+    this.profileForm?.reset({...this.profileUserData});
   }
 
   onClearError() {

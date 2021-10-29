@@ -55,7 +55,6 @@ export class DataStorageService {
     const userId = this.authService.user.value.id;
 
     const userDataUrl = this.getUserDataUrl(userId);
-    console.log(userData);
     return this.http.put(userDataUrl, userData);
   }
 
