@@ -5,7 +5,6 @@ import {FormsModule} from "@angular/forms";
 
 import {AuthComponent} from "./auth.component";
 import {SharedModule} from "../shared/shared.module";
-import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -14,14 +13,10 @@ import {HttpClientModule} from "@angular/common/http";
   imports: [
     CommonModule,
     FormsModule,
-    HttpClientModule,
     SharedModule,
     RouterModule.forChild([
       {path: '', component: AuthComponent}
     ])
-  ],
-  exports: [
-    HttpClientModule
   ]
 })
 export class AuthModule {

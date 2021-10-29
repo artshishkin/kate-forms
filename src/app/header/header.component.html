@@ -14,7 +14,7 @@
           ремонту и обслуживанию автомобилей</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li *ngIf="isAuthenticated"><a style="cursor: pointer; color: green;">{{username | async}}</a></li>
+        <li *ngIf="isAuthenticated"><a [routerLink]="['/profile']" type="button" style="color: green;">{{username | async}}</a></li>
         <li *ngIf="isAuthenticated"><a style="cursor: pointer;" (click)="onLogout()">Выйти</a></li>
         <li appDropdown class="dropdown">
           <a style="cursor: pointer;" class="dropdown-toggle" role="button">
