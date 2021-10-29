@@ -15,7 +15,7 @@
           type="text"
           id="organization-name"
           class="form-control"
-          [ngModel]="profileUserData['organization-name']"
+          [ngModel]="profileUserData?.['organization-name']"
           name="organization-name"
           required
         >
@@ -26,7 +26,7 @@
         <select
           name="organization-federal-district"
           id="organization-federal-district"
-          [ngModel]="profileUserData['organization-federal-district']"
+          [ngModel]="profileUserData?.['organization-federal-district']"
           class="form-control"
           required
           #district
@@ -43,7 +43,7 @@
         <select
           name="organization-federal-subject"
           id="organization-federal-subject"
-          [ngModel]="profileUserData['organization-federal-subject']"
+          [ngModel]="profileUserData?.['organization-federal-subject']"
           class="form-control"
           required>
           <option *ngFor="let subject of federalSubjects"
@@ -58,7 +58,7 @@
           type="text"
           id="organization-address"
           class="form-control"
-          [ngModel]="profileUserData['organization-address']"
+          [ngModel]="profileUserData?.['organization-address']"
           name="organization-address"
           required
         >
@@ -70,7 +70,7 @@
           type="text"
           id="person-name"
           class="form-control"
-          [ngModel]="profileUserData['person-name']"
+          [ngModel]="profileUserData?.['person-name']"
           name="person-name"
           required
         >
@@ -82,7 +82,7 @@
           type="text"
           id="person-phone"
           class="form-control"
-          [ngModel]="profileUserData['person-phone']"
+          [ngModel]="profileUserData?.['person-phone']"
           name="person-phone"
           required
         >
