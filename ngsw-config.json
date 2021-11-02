@@ -26,5 +26,20 @@
         ]
       }
     }
+  ],
+  "dataGroups": [
+    {
+      "name": "cabinet-data",
+      "urls": [
+        "https://kate-monitoring-default-rtdb.europe-west1.firebasedatabase.app/users/*/data.*",
+        "https://kate-monitoring-default-rtdb.europe-west1.firebasedatabase.app/users/*/cabinet/*"
+      ],
+      "cacheConfig": {
+        "maxSize": 5,
+        "maxAge": "1h",
+        "timeout": "10s",
+        "strategy": "freshness"
+      }
+    }
   ]
 }
